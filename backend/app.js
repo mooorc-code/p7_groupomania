@@ -7,12 +7,12 @@ const path = require( 'path' );
 const helmet = require( "helmet" );
 require( 'dotenv' ).config();
 
-
-//sequelize//
-new Sequelize('database', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'mysql'
-});
+//Database
+const db = require('./config/config');
+//Test connexion DB
+db.authenticate()
+    .then(() => console.log('Database connected'))
+    .catch(err => console.log('Error: ' + err))
 
 const app = express();
 
@@ -26,6 +26,8 @@ app.use( (req, res, next) => {
 app.use( helmet() );
 app.use( bodyParser.json() );
 //routers//
-
+app.use('/api', userRoutes);
+// app.use('/api/post', postRoutes);
+// app.use('/api/comment', commentRoutes)
 
 module.exports = app;
