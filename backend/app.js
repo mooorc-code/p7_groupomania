@@ -1,18 +1,20 @@
 //modules//
 const express = require( 'express' );
-const {Sequelize} = require( "sequelize" );
+const Sequelize = require( "sequelize" );
 const bodyParser = require( 'body-parser' );
 const userRoutes = require( './routes/user' );
+const postRoutes = require( './routes/post' );
+const commentRoutes = require( './routes/comment' );
 const path = require( 'path' );
 const helmet = require( "helmet" );
 require( 'dotenv' ).config();
 
 //Database
-const db = require('./config/config');
+const db = require( './config/config' );
 //Test connexion DB
 db.authenticate()
-    .then(() => console.log('Database connected'))
-    .catch(err => console.log('Error: ' + err))
+    .then( () => console.log( 'Database connected' ) )
+    .catch( err => console.log( 'Error: ' + err ) )
 
 const app = express();
 
@@ -26,8 +28,8 @@ app.use( (req, res, next) => {
 app.use( helmet() );
 app.use( bodyParser.json() );
 //routers//
-app.use('/api', userRoutes);
-// app.use('/api/post', postRoutes);
-// app.use('/api/comment', commentRoutes)
+app.use( '/api/auth', userRoutes );
+app.use( '/api/post', postRoutes );
+app.use( '/api/comment', commentRoutes );
 
 module.exports = app;
